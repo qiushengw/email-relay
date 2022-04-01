@@ -18,7 +18,6 @@ import java.util.Properties;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 
-import email.relay.sender.MailSenderGmail;
 import email.relay.smtp.helper.SimpleMessageListener;
 import email.relay.smtp.helper.SimpleMessageListenerAdapter;
 import email.relay.smtp.server.SMTPServer;
@@ -30,6 +29,8 @@ import email.relay.smtp.TooMuchDataException;
 public class Wiser implements SimpleMessageListener
 {
 	private final static Logger log = LoggerFactory.getLogger(Wiser.class);
+	private final MailSender mailSender = new MailSender();
+
 	SMTPServer server;
 	protected List<WiserMessage> messages = Collections.synchronizedList(new ArrayList<WiserMessage>());
 	public Wiser()
@@ -66,7 +67,6 @@ public class Wiser implements SimpleMessageListener
 		System.out.println("Accepting mail from " + from + " to " + recipient);
 		return true;
 	}
-	MailSender mailSender = new MailSenderGmail();
 	/** Cache the messages in memory */
 	public void deliver(String from, String recipient, InputStream data) throws TooMuchDataException, IOException
 	{
